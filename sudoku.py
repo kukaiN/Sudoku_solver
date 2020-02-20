@@ -1,17 +1,47 @@
 import math
 import random
+import time
 
-def main():
-    if True:#input("make a new board?") == "yes":
-        board = create_sudoku__board(9,9)
+def make_board(n):
+    return [[0 for _ in range(n)] for _ in range(n)]
 
-def solve_sudoku():
-    if 
+def reccursive_sudoku_solver(board, n):
+    """
+        recursive function that starts from the top row and fills the rows left to right with possible values
+        this function will print the board if a solution is found
+        This function essensially looks at all possible states and will back-track if it enters an invalid state
+    """
+    for j in range(n): 
+        for i in range(n):
+            if board[j][i] == 0:
+                possible_num = return_available_num(board, i, j) #get curerently available values
+                if possible_num != []: # if there are available numbers
+                    for num in possible_num: # try filling in the number into the slot
+                        board[j][i] = num
+                        reccursive_sudoku_solver(board, n) # go to the next state
+                        board[j][i] = 0 # if the recursive function "returns", a solution was not found so back-track
+                return
+    # exit condition of the recursive sudoku is if all entries are filled
+    print_board(board)
 
-def print_board(board, x, y):
-    """"function that prints the sudoku board neatly"""
-    for i in range(y):
-        print(board[i])
+def heuristic_sudoku_solver(board, n):
+    for y in range(n):
+        for x in range(n):
+            if board[y][x] == 0:
+                num_list = return_available_num(board, x, y)
+                if len(num_list) == 1:
+                    board[y][x] = num_list[0]
+    reccursive_sudoku_solver(board, n)
+    
+def Knuth_DLX_solver():
+    """
+    
+
+    """
+
+def print_board(board):
+    for row in board: print(row)
+    print("*" * 20)
 
 def return_available_num(board, x, y):
     """
@@ -33,39 +63,79 @@ def return_available_num(board, x, y):
         possible_solutions = list(set(possible_num)-set(found_num))
     return possible_solutions
 
-def create_sudoku__board(x, y, ran = False):
+def xy_to_index(x, y, n):
+    return y*n + x
+
+def index_to_xy(index, n):
+    return (index%n, index//n)
+
+def num_in_rows(board, row_number):
+    return list({board[row_number][i] for i in range(len(board))} - set([0]))
+
+def num_in_column(board, column_number):
+    return list({board[i][column_number] for i in range(len(board))} - set([0]))
+
+def create_sudoku_board(n, ran = False):
     """
     returns the sudoku board of size x by y, and this will only work if the sizes are legit sudoku board size
     the "ran" variable stands for random and indicates if it should return a randomized board or the default board
     """
-    if (ran == True) and (x == y) and (int(math.sqrt(x))**2 == x): # make a random board
-        board = [[0 for _ in range(x)] for _ in range(y)] # fill board with all zero
-        for i in range(x):
-                for j in range(y):
-                    if random.random() < 0.15: # enter a valid entry into a cell with 15%
-                        possible_list = return_available_num(board, i, j)
-                        if possible_list != []: #checks if we can place a random value in that cell
-                            board[j][i] = random.choice(possible_list) 
-    else:
-        if ran:
-            board = [[0 for _ in range(9)] for _ in range(9)]
-            for i in range(9):
-                for j in range(9):
-                    if random.random() < 0.15: # enter a valid entry into a cell with 15%
-                        possible_list = return_available_num(board, i, j)
-                        if possible_list != []: #checks if we can place a random value in that cell
-                            board[j][i] = random.choice(possible_list)
-        else: # make the returned board the default board
-            board = [[0, 0, 0, 0, 8, 0, 0, 2, 9],
-                    [1, 2, 8, 0, 0, 0, 0, 0, 0],
-                    [0, 5, 7, 0, 0, 0, 0, 0, 0],
-                    [2, 0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    [3, 0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0], 
-                    [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    root_n = int(math.sqrt(n))
+    if (ran == True) and (root_n**2 == n): # make a random board
+        board = make_board(n) # fill board with all zero 
+        for block_row_index in range(root_n):
+            num_list = list(range(1,n+1))
+            if block_row_index == 0:
+                random.shuffle(num_list) #shuffles 1~9
+                for i in range(root_n):
+                    for j in range(root_n):
+                        board[j][i] = num_list[j*root_n+i]
+            else:
+                available_num = set(range(1,n+1))
+                for y_val in range(root_n):
+                    if y_val != root_n-2:
+                        row_num = set(num_in_rows(board, y_val))
+                        used_nums = random.sample(available_num - row_num, 3)
+                        print(used_nums)
+                        for ind_val, num_val in enumerate(used_nums):
+                            board[y_val][block_row_index*root_n + ind_val] = num_val
+                        available_num = available_num-row_num
+                    else:
+                        
+                        last_row = set(num_in_rows(board, y_val+1))
+                        values_for_row = set(available_num.intersection(last_row))
+                        print(values_for_row)
+                        available_num = available_num - values_for_row
+                        print("set", available_num)
+                        if len(values_for_row) != root_n:
+                            x = root_n - len(values_for_row)
+                            print("x is", x)
+                            values_for_row.union(set(random.sample(available_num, x)))
+                        for ind_val, num_val in enumerate(values_for_row):
+                                board[y_val][block_row_index*root_n+ind_val] = num_val
+                        
+                        
+                
+            print_board(board)
+
+
+    else: # use a defined board, a "hard" sudoku board from the internet
+        board = [[0, 0, 0, 7, 0, 9, 0, 0, 0],
+                [5, 7, 0, 0, 0, 0, 6, 1, 0],
+                [0, 1, 0, 0, 0, 0, 0, 0, 3],
+                [4, 0, 0, 9, 3, 0, 0, 2, 8],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                [7, 3, 0, 0, 4, 2, 0, 0, 5],
+                [2, 0, 0, 0, 0, 0, 0, 5, 0],
+                [0, 8, 7, 0, 0, 0, 0, 3, 9], 
+                [0, 0, 0, 4, 0, 3, 0, 0, 0]]
     return board
+
+def main():
+    if True:
+        board = create_sudoku_board(9, ran = True)
+        #reccursive_sudoku_solver(board, 9)
+        #heuristic_sudoku_solver(board, 9)
 
 if __name__ == "__main__":
     main()    
