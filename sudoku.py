@@ -18,16 +18,19 @@ def reccursive_sudoku_solver(board, n, root_n):
                 if board[j][i] == 0:
                     possible_num = return_available_num(board, i, j, n, root_n) #get curerently available values
                     if possible_num != []: # if there are available numbers
+                        random.shuffle(possible_num)
                         for num in possible_num: # try filling in the number into the slot
                             board[j][i] = num
                             reccursive_sudoku_solver(board, n, root_n) # go to the next state
                             board[j][i] = 0 # if the recursive function "returns", a solution was not found so back-track
                     return
         # exit condition of the recursive sudoku is if all entries are filled
-        global sol_num
-        if sol_num < 100:
+        global sol_num, limit, solved_board, print_bool
+        if sol_num < limit:
             sol_num+=1
-            if sol_num < 10: print_board(board)
+            if print_bool and sol_num < 1: 
+                solved_board = board
+                print_board(board)
         else: find = False
 
 def heuristic_sudoku_solver(board, n, root_n):
@@ -113,15 +116,36 @@ def fill_top_block(board, root_n, n):
 def transpose_matrix(board, n):
     return [[board[x][y] for x in range(n)] for y in range(n)]
 
-def make_unique_solution_board(board, n, root_n):
-    global find, stop, unique_board
+def make_unique_solution_board(board, n, root_n, difficulty):
+    global find, stop, limit, sol_num
+    limit = 3
     non_removable_points = {}
     removable_points = set(range(n**2))
-    
+    while len(removable_points) > 2*difficulty:
+        fake_board = [[board[y][x]] for x in range(n) for y in range(n)] #copy of the board
+        counter = 10
+        if counter > len(removable_points):
+            temp_list = random.sample(removable_points, 10)
+            for index in temp_list:
+                i, j = index_to_xy(index, n)
+                fake_board[j][i] = 0
+            find, sol_num = True, 0
+            reccursive_sudoku_solver(fake_board, n, root_n)
+            if sol_num != 1:
+                
+            else:
+                removable_points = removable_points - set(temp_list)
+                board = fake_board
+            
+            
+            if counter > 1:
+                counter-=1
+        else:
+            counter = 1
 
+    return board
 
-
-def create_sudoku_board(n, ran = False):
+def create_sudoku_board(n, ran = False, difficulty):
     """
     returns the sudoku board of size x by y, and this will only work if the sizes are legit sudoku board size
     the "ran" variable stands for random and indicates if it should return a randomized board or the default board
@@ -130,12 +154,13 @@ def create_sudoku_board(n, ran = False):
     if (ran == True) and (root_n**2 == n) and n > 1: # make a random board
         board = make_board(n) # fill board with all zero 
         fill_block(board, 0, 0 , root_n, random.sample(list(range(1,n+1)), n))#shuffles 1~n and fill the top-left block
-        board = fill_top_block(board, root_n, n)
-        checker(board, root_n)
-        board = fill_top_block(transpose_matrix(board, n), root_n, n)
-        checker(board, root_n)
-        board = transpose_matrix(board, n)
-        #board = make_unique_solution_board(board, root_n, n)
+        board = transpose_matrix(fill_top_block(board, root_n, n), n)
+        board = transpose_matrix(fill_top_block(board, root_n, n), n)
+        print_board(board)
+        global solved_board, find, limit, sol_num
+        find, sol_num, limit = True, 0, 1
+        reccursive_sudoku_solver(board, n, root_n) 
+        board = make_unique_solution_board(solved_board, root_n, n, difficulty)
     else: # use a defined board, a "hard" sudoku board from the internet
         board = [[0, 0, 0, 7, 0, 9, 0, 0, 0],
                 [5, 7, 0, 0, 0, 0, 6, 1, 0],
@@ -150,10 +175,12 @@ def create_sudoku_board(n, ran = False):
 
 def main():
     if True:
-        global find, sol_num
+        global find, sol_num, limit solved_board, print_bool
+        print_bool = False
         root_n = 3
-        board = create_sudoku_board(root_n**2, ran = True)
-        find, sol_num = True, 0 
+        difficulty = [1, 2, 3, 4, 5] # 1 is easy,  5 is hard
+        board = create_sudoku_board(root_n**2, ran = True, difficulty[0])
+        find, sol_num, limit, solved_board, print_bool = True, 0, 100, None, True
         reccursive_sudoku_solver(board, root_n**2, root_n)
         print("found over ", sol_num)
         #heuristic_sudoku_solver(board, 9, root_n)
