@@ -54,6 +54,10 @@ then fill the top three board and transpose it back
 then use the recursive sudoku solver to make a filled randomized sudoku board, then start making batches of random positions and check the uniqueness of the solution if they're removed.  if the uniqueness is preserved, remove the values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if enough entries are removed.
 
 Outputs:
+Random empty sudoku board:
+
 ![empty_state](Figure_1.png)
+
+solved sudoku board:
 
 ![solved_state](Figure_2.png)
