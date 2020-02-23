@@ -18,37 +18,16 @@ I didn't use this method because the number of possible sudoku board is limited 
 My method of generating a sudoku board is to first fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values.
 
 fill the top 3 blocks
-[1, 3, 7, 8, 6, 2, 9, 5, 4]<br/>
-[5, 4, 9, 7, 1, 3, 8, 6, 2]<br/>
-[2, 8, 6, 4, 9, 5, 1, 3, 7]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
-[0, 0, 0, 0, 0, 0, 0, 0, 0]<br/>
+
+![board1](Figure_3.png)
 
 transpose the matrix
-[1, 5, 2, 0, 0, 0, 0, 0, 0]<br/>
-[3, 4, 8, 0, 0, 0, 0, 0, 0]<br/>
-[7, 9, 6, 0, 0, 0, 0, 0, 0]<br/>
-[8, 7, 4, 0, 0, 0, 0, 0, 0]<br/>
-[6, 1, 9, 0, 0, 0, 0, 0, 0]<br/>
-[2, 3, 5, 0, 0, 0, 0, 0, 0]<br/>
-[9, 8, 1, 0, 0, 0, 0, 0, 0]<br/>
-[5, 6, 3, 0, 0, 0, 0, 0, 0]<br/>
-[4, 2, 7, 0, 0, 0, 0, 0, 0]<br/>
+
+![board2](Figure_4.png)
 
 then fill the top three board and transpose it back
-[1, 3, 7, 8, 6, 2, 9, 5, 4]<br/>
-[5, 4, 9, 7, 1, 3, 8, 6, 2]<br/>
-[2, 8, 6, 4, 9, 5, 1, 3, 7]<br/>
-[4, 2, 8, 0, 0, 0, 0, 0, 0]<br/>
-[7, 9, 5, 0, 0, 0, 0, 0, 0]<br/>
-[3, 6, 1, 0, 0, 0, 0, 0, 0]<br/>
-[6, 7, 3, 0, 0, 0, 0, 0, 0]<br/>
-[9, 1, 4, 0, 0, 0, 0, 0, 0]<br/>
-[8, 5, 2, 0, 0, 0, 0, 0, 0]<br/>
+
+![board3](Figure_5.png)
 
 
 then use the recursive sudoku solver to make a filled randomized sudoku board, then start making batches of random positions and check the uniqueness of the solution if they're removed.  if the uniqueness is preserved, remove the values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if enough entries are removed.
