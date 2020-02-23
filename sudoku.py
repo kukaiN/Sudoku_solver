@@ -206,8 +206,12 @@ def create_sudoku_board(root_n, n, difficulty, ran = False):
     if (ran == True) and n > 1: # make a random board
         board = make_board(n) # fill board with all zero 
         fill_block(board, 0, 0 , root_n, random.sample(list(range(1,n+1)), n))#shuffles 1~n and fill the top-left block
+        board = fill_top_block(board, root_n, n)
+        print_board(board)
+        board = transpose_matrix(board, n)
+        print_board(board)
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
-        board = transpose_matrix(fill_top_block(board, root_n, n), n)
+        print_board(board)
         global solved_board, find, limit, sol_num, print_bool
         find, sol_num, limit, print_bool = True, 0, 1, False
         reccursive_sudoku_solver(board, n, root_n) # fill rest of the entries with valid random values
