@@ -17,16 +17,13 @@ I didn't use this method because the number of possible sudoku board is limited 
 
 My method of generating a sudoku board is to first fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values.
 
-fill the top 3 blocks
-
+step 1.) fill the top 3 blocks<br/>
 ![board1](Figure_3.png)
 
-transpose the matrix
-
+transpose the matrix<br/>
 ![board2](Figure_4.png)
 
-then fill the top three board and transpose it back
-
+then fill the top three board and transpose it back<br/>
 ![board3](Figure_5.png)
 
 
