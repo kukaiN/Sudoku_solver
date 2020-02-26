@@ -22,13 +22,8 @@ My method of generating a sudoku board is to first fill the top 3 blocks with va
 
 | | | |
 |---|---|---|
-|step 1.) fill the top 3 blocks |1.) transpose the matrix | 2.) fill the top three board and transpose it back|
-|![board1](Figure_3.png) |![board1](Figure_3.png)|![board2](Figure_4.png)|
-
-
-
-
-![board3](Figure_5.png)
+| step 1.) fill the top 3 blocks |1.) transpose the matrix | 2.) fill the top three board and transpose it back|
+| ![board1](Figure_3.png) | ![board2](Figure_4.png) | ![board3](Figure_5.png) |
 
 
 then use the recursive sudoku solver to make a filled randomized sudoku board, then start making batches of random positions and check the uniqueness of the solution if they're removed.  if the uniqueness is preserved, remove the values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if enough entries are removed.
