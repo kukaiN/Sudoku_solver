@@ -23,7 +23,7 @@ step 1.) fill the top 3 blocks<br/>
 | | |
 |---|---|
 |transpose the mat | transpose the mat|
-
+|![board1](Figure_3.png)|![board2](Figure_4.png)|
 
 transpose the matrix<br/>
 ![board2](Figure_4.png)
