@@ -7,9 +7,9 @@ Updates & future plans:
 - I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is very intresting and I plan to update this program once I finish the exxact cover chapter of Knuth's TAoCP book 5.
 
 Table of Contents:
-- [Sudoku Generator](generator)
-    - [visual of the generator](visual)
-- [Output of the code](output)
+- [Sudoku Generator](#generator)
+    - [visual of the generator](#visual)
+- [Output of the code](#output)
 
 I didn't use this method, but there are algorithms that makes a filled sudoku in a fast and reliable way, 
 notably the method listed below:
