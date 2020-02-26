@@ -20,6 +20,11 @@ My method of generating a sudoku board is to first fill the top 3 blocks with va
 step 1.) fill the top 3 blocks<br/>
 ![board1](Figure_3.png)
 
+| | |
+|---|---|
+|transpose the mat | transpose the mat|
+
+
 transpose the matrix<br/>
 ![board2](Figure_4.png)
 
