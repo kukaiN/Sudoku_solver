@@ -1,15 +1,15 @@
 # Sudoku_solver
- just solving a sudoku board using python
+ Just solving a sudoku board using python
 
  I used recursion to solve sudoku, later found out that its called back-tracking.
 
 ### Updates & future plans:
-- I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is very intresting and I plan to update this program once I finish the exxact cover chapter of Knuth's TAoCP book 5.
+- I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is very intresting and I plan to update this program once I finish the exact cover chapter of Knuth's TAoCP book 5.
 
 ## Table of Contents:
 - [Sudoku Generator](#generator)
-    - [visual of the generator](#visual)
-- [Output of the code](#output)
+    - [Visual of the Generator](#visual)
+- [Output of the Code](#output)
 
 I didn't use this method, but there are algorithms that makes a filled sudoku in a fast and reliable way, 
 notably the method listed below:
