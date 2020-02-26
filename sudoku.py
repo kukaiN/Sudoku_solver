@@ -83,7 +83,7 @@ def board_to_image(board, n):
     for y in range(n): # placing the values on the plot in a grid shape
         for x in range(n):
             val = " " if  temp_board[y][x] == 0 else temp_board[y][x]
-            ax.text(y, x,val, ha="center", va="center", color="k")
+            ax.text(x, y,val, ha="center", va="center", color="k", fontsize=20)
     fig.tight_layout()
     plt.grid(True)
     plt.show()
@@ -208,6 +208,7 @@ def create_sudoku_board(root_n, n, difficulty, ran = False):
         fill_block(board, 0, 0 , root_n, random.sample(list(range(1,n+1)), n))#shuffles 1~n and fill the top-left block
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
+        board_to_image(board, n)
         global solved_board, find, limit, sol_num, print_bool
         find, sol_num, limit, print_bool = True, 0, 1, False
         reccursive_sudoku_solver(board, n, root_n) # fill rest of the entries with valid random values
@@ -234,6 +235,7 @@ def main():
     # modifying global variables, because we're now in the solving stage
     find, sol_num, limit, solved_board, print_bool = True, 0, 100, None, True
     reccursive_sudoku_solver(board, root_n**2, root_n)
+    board_to_image(solved_board, root_n**2)
     #heuristic_sudoku_solver(board, 9, root_n)
 
 if __name__ == "__main__":
