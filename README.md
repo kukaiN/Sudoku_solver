@@ -1,7 +1,7 @@
 # Sudoku_solver
-Just solving a sudoku board using Python
-
+Just solving a sudoku board using Python</br>
 I used recursion to solve sudoku, later found out that its called back-tracking.
+
 ---
 ### Updates & future plans:
 - I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is fascinating, and I plan to update this program once I finish the exact cover chapter of Knuth's TAoCP book 5.
