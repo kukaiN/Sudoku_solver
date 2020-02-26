@@ -6,6 +6,7 @@ I used recursion to solve sudoku, later found out that its called back-tracking.
 ### Updates & future plans:
 - I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is fascinating, and I plan to update this program once I finish the exact cover chapter of Knuth's TAoCP book 5.
  - If I feel like it, I will add few more sudoku generators with different approaches to generating "random" boards
+ - I might make a new implimentation using pandas and numpy to make the 2d array efficient.
  ---
 ## Table of Contents:
 - [Sudoku Generator](#generator)
@@ -27,6 +28,7 @@ I didn't use this method, but some algorithms make filled sudoku in a fast and r
 I didn't use this method because the number of possible sudoku boards is limited, although the number of possible output states is enormous. I wanted to make a pure random sudoku generator that can output all possible states with unique solutions with non-zero probability, so I made a generator using the recursive solver to generate a complete board.
 My method of generating a sudoku board is to fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values. Then you have a block of rows and a column of rows that are somewhat independent of each other, then use the recursive solver to fill in the rest.  The recursive solver chooses randomly from the possible numbers that can be entered in that cell, so the randomness of the output is not damaged.
 
+---
 <a id = "visual"></a> 
 ## Visual Interpertation of the Generating Algorithm:
 | 1.) fill the top 3 blocks |2.) Transpose the matrix | 3.) & 4.) Fill the new top blocks and transpose it back|
