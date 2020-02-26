@@ -5,9 +5,11 @@ I used recursion to solve sudoku, later found out that its called back-tracking.
 ---
 ### Updates & future plans:
 - I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is fascinating, and I plan to update this program once I finish the exact cover chapter of Knuth's TAoCP book 5.
- - If I feel like it, I will add few more sudoku generators with different approaches to generating "random" boards
- - I might make a new implimentation using pandas and numpy to make the 2d array efficient.
- ---
+    -   If Knuth's algorithm requires C++, then I'll write it in C++.
+- If I feel like it, I will add few more sudoku generators with different approaches to generating "random" boards
+- I might make a new implimentation using pandas and numpy to make the 2d array efficient.
+
+---
 ## Table of Contents:
 - [Sudoku Generator](#generator)
     - [Visual of the Generator](#visual)
