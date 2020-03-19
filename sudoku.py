@@ -1,59 +1,7 @@
-import math
 import random
 import matplotlib.pyplot as plt
 import numpy as np
-
-def make_board(n):
-    """Makes a n x n board that is filled with zeros"""
-    return [[0 for _ in range(n)] for _ in range(n)]
-
-def reccursive_sudoku_solver(board, n, root_n):
-    """
-        recursive function that starts from the top row and fills the rows left to right with possible values
-        this function will print the board if a solution is found
-        This function essensially looks at all possible states and will back-track if it enters an invalid state
-    """
-    global find
-    if find:
-        for j in range(n): 
-            for i in range(n):
-                if board[j][i] == 0:
-                    possible_num = return_available_num(board, i, j, n, root_n) #get curerently available values
-                    if possible_num != []: # if there are available numbers
-                        random.shuffle(possible_num)
-                        for num in possible_num: # try filling in the number into the slot
-                            board[j][i] = num
-                            reccursive_sudoku_solver(board, n, root_n) # go to the next state
-                            board[j][i] = 0 # if the recursive function "returns", a solution was not found so back-track
-                    return
-        # exit condition of the recursive sudoku is if all entries are filled
-        global sol_num, limit, solved_board, print_bool
-        if sol_num < limit: # counts if the board have multiple answers, i.e. is it unique?
-            if sol_num < 1:
-                solved_board = copy_board(board, n)
-                if print_bool: print_board(solved_board)
-            sol_num+=1
-        else: find = False
-
-def heuristic_sudoku_solver(board, n, root_n):
-    """
-    tries to fill some values that definitly fits in that position
-    then goes into the recursive sudoku solver.
-    """
-    for _ in range(3): 
-        for y in range(n):
-            for x in range(n):
-                if board[y][x] == 0:
-                    num_list = return_available_num(board, x, y, n, root_n)
-                    if len(num_list) == 1: # if the value that goes in this position is unique
-                        board[y][x] = num_list[0]
-    reccursive_sudoku_solver(board, n, root_n)
-    
-def Knuth_DLX_solver():
-    """
-    not implimented yet, working on it
-    """
-    pass
+import exact_cover_solver as exactCover
 
 def print_board(board):
     """ prints the sudoku board in the terminal and is visualized nicely """
@@ -62,9 +10,9 @@ def print_board(board):
 
 def board_to_image(board, n):
     """
-    uses numpy and matplotlib to output a board state.  This uses a colormap underneath,
-    it's just that im using 0s to make the underlying grid shape and the 0s are mapped to the color white
-    then the values of the sudoku are placed in their right position and the plot is outputted
+        uses numpy and matplotlib to output a board state.  This uses a colormap underneath,
+        it's just that im using 0s to make the underlying grid shape and the 0s are mapped to the color white
+        then the values of the sudoku are placed in their right position and the plot is outputted
     """
     temp_board = np.array(board)
     fig, ax = plt.subplots()
@@ -88,6 +36,38 @@ def board_to_image(board, n):
     plt.grid(True)
     plt.show()
 
+def copy_board(board, n):
+    """ self-explanitory, does a list comprehension to copy board"""
+    return [[board[j][i] for i in range(n)] for j in range(n)]
+
+def transpose_matrix(board, n):
+    """ self-explanitory, does a list comprehension to tanspose the matrix"""
+    return [[board[x][y] for x in range(n)] for y in range(n)]
+
+def count_filled_cell(board):
+    return sum(1 if cell else 0 for row in board for cell in row)
+
+def reccursive_sudoku_solver(board, n, root_n, filled_cells):
+    """
+        recursive function that starts from the top row and fills the rows left to right with possible values
+        This function essensially looks at all possible states and will back-track if it enters an invalid state
+    """
+    if filled_cells == n**2: # exit condition
+        yield board
+    else:
+        for j in range(n): 
+            for i in range(n):
+                if board[j][i] == 0:
+                    possible_num = return_available_num(board, i, j, n, root_n) #get curerently available values
+                    if possible_num != []: # if there are available numbers
+                        random.shuffle(possible_num)
+                        for num in possible_num: # try filling in the number into the slot
+                            board[j][i] = num
+                            for k in reccursive_sudoku_solver(board, n, root_n, filled_cells+1):# go to the next state
+                                yield k
+                            board[j][i] = 0 # if the recursive function "returns", a solution was not found so back-track
+                    return
+
 def return_available_num(board, x, y, n, root_n):
     """
     makes a list of the values already taken by the column, row and box on the sudoku board
@@ -98,7 +78,7 @@ def return_available_num(board, x, y, n, root_n):
         found_num+=[board[y][i] for i in range(n)] # horizontal components
         found_num+=[board[i][x] for i in range(n)] # vertical components
         # the value (x, y) is stored twice, but is zero, so it's ok
-        block_x, block_y = math.floor(x/root_n), math.floor(y/root_n) # number of the sub-block which x,y is located
+        block_x, block_y = int(x/root_n), int(y/root_n) # number of the sub-block which x,y is located
         found_num+= [board[root_n*block_y+l][root_n*block_x+k] for k in range(root_n) for l in range(root_n)]
         possible_solutions = list(set(range(1, int(n)+1))-set(found_num))
     return possible_solutions
@@ -114,28 +94,13 @@ def num_in_column(board, column_number):
 def fill_block(board, block_row, block_column, root_n, sequence):
     """
     given the coordinates of the sub-block of a sudoku board, it will try to fill that board with valid numbers
-    only used to fill the top left corner block
+    ps this function is only used to fill the top left corner block
     """
     if (block_column < root_n) and (block_row < root_n) and (len(sequence) == root_n**2):
         for j in range(root_n):
             for i in range(root_n):
                 board[block_row*root_n + j][block_column*root_n + i] = sequence[j*root_n + i]
-        return board
-    else: print("error filling block")
-
-def checker(brd, rt_n): 
-    """ 
-    check the top blocks of the sudoku board for inconsistencies
-    not used in anyother parts of the code, was used for debugging purposes
-    """
-    num_set = set(range(1,rt_n**2+1)) # set of numbers
-    for i in range(rt_n): # check row, no need to check column
-        if len(num_set - set(num_in_row(brd, i))) != 0: print('something wrong with row', i)
-        else: print("row",i, "is ok")
-    for i in range(rt_n): # check block
-        temp_set = {brd[y][i*rt_n+x] for y in range(rt_n) for x in range(rt_n)}
-        if len(num_set - temp_set) != 0: print("block number",i , "is WRONG******")
-        else: print("block", i, "is ok")
+    return board
 
 def fill_top_block(board, root_n, n):
     """ fills the top blocks of the sudoku board with valid random values"""
@@ -154,65 +119,53 @@ def fill_top_block(board, root_n, n):
             available_num-=set(used_nums) # update the leftover numbers 
     return board
 
-def transpose_matrix(board, n):
-    """ self-explanitory, does a list comprehension to tanspose the matrix"""
-    return [[board[x][y] for x in range(n)] for y in range(n)]
-
-def copy_board(board, n):
-    """ self-explanitory, does a list comprehension to copy board"""
-    return [[board[j][i] for i in range(n)] for j in range(n)]
-
 def make_unique_solution_board(board, n, root_n, difficulty):
     """
-    This function will take a solved sudoku board and remove random positions and will perserve the uniqueness of a solution
-    The uniqueness of a solution is conserved by the following:
-    1.) remove a small batch of numbers from the grid
-    2.) use the recursive sudoku solver to check if the solution is unique
-    3.) a.) If theres only one solutions, the removed values doesnt change the solution, so they can be removed.
-        b.) If there's more than one solution, the one or more of the values we took out was critical to the uniqueness, 
-            so put back the values and restart from one 
-        keep doing this process until a desired amount of numbers is removed
+        This function will take a solved sudoku board and remove random positions and will perserve the uniqueness of a solution
+        The uniqueness of a solution is conserved by the following:
+        1.) remove a small batch of numbers from the grid
+        2.) use the recursive sudoku solver to check if the solution is unique
+        3.) a.) If theres only one solutions, the removed values doesnt change the solution, so they can be removed.
+            b.) If there's more than one solution, the one or more of the values we took out was critical to the uniqueness, 
+                so put back the values and restart from one 
+            keep doing this process until a desired amount of numbers is removed
     """
-    global find, limit, sol_num
     # initializing variables
     available_set = set(range(n**2)) 
-    counter, leftover_numbers, loop_counter = math.floor((n**2)*0.15), n**2, math.floor((n**2)*0.25)
-    print("finish making a random board if the board have", 17 + 4*difficulty, "or less filled cells, or one step before solutions diverges from unique solution")
+    number_to_remove, leftover_numbers, loop_counter = int((n**2)*0.15), n**2, int((n**2)*0.3)
     while leftover_numbers > 4*difficulty + 17: #17 is the minimal number currently known for a 9x9 board, so it can be replaced for other sized sudoku boards
         if loop_counter < 0: break # breaks from the loop if the procedure lingers
         else: loop_counter-=1
         fake_board = copy_board(board, n)   
-        if counter < len(available_set):
-            maybe_remove = random.sample(available_set, counter) # the batch of positions to be removed from the board
+        if number_to_remove < len(available_set):
+            maybe_remove = random.sample(available_set, number_to_remove) # the batch of positions to be removed from the board
             for index in maybe_remove: # remove values stored in these positions
                 fake_board[index//n][index%n] = 0
-            sol_num, limit, find = 0, 3, True
-            reccursive_sudoku_solver(fake_board, n, root_n) #solves the board
-            if sol_num == 1: # if solutions is unique, then update the board 
+            sol_counter = 0
+            for sol in reccursive_sudoku_solver(fake_board, n, root_n, count_filled_cell(fake_board)): #solves the board
+                sol_counter+=1
+                if sol_counter > 1: break
+            if sol_counter == 1: # if solutions is unique, then update the board 
                 board = copy_board(fake_board, n)
-            if sol_num == 1 or counter == 1: # modify the set that stores the positions that we can remove
-                leftover_numbers-=counter
+                leftover_numbers-=number_to_remove
                 available_set-=set(maybe_remove)
-        if counter > 1: counter -=1
-    print_board(board)
-    print(sum(1 if board[y][x] != 0 else 0 for x in range(n) for y in range(n)), "out of", n**2, "is filled with values.")
+        if number_to_remove > 1: number_to_remove -=1
+    print(count_filled_cell(board), "out of", n**2, "is filled")
     return board
 
-def create_sudoku_board(root_n, n, difficulty, ran = False):
+def create_sudoku_board(root_n, n, difficulty, random_board=False):
     """
-    returns the sudoku board of size x by y, and this will only work if the sizes are legit sudoku board size
-    the "ran" variable stands for random and indicates if it should return a randomized board or the default board
+        returns the sudoku board of size x by y, and this will only work if the sizes are legit sudoku board size
+        the "ran" variable stands for random and indicates if it should return a randomized board or the default board
     """
-    if (ran == True) and n > 1: # make a random board
-        board = make_board(n) # fill board with all zero 
+    if (random_board): # make a random board
+        board = [[0 for _ in range(n)] for _ in range(n)] # fill board with all zero 
         fill_block(board, 0, 0 , root_n, random.sample(list(range(1,n+1)), n))#shuffles 1~n and fill the top-left block
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
-        board_to_image(board, n)
-        global solved_board, find, limit, sol_num, print_bool
-        find, sol_num, limit, print_bool = True, 0, 1, False
-        reccursive_sudoku_solver(board, n, root_n) # fill rest of the entries with valid random values
-        board = make_unique_solution_board(solved_board, n, root_n, difficulty)
+        for sol in reccursive_sudoku_solver(board, n, root_n, count_filled_cell(board)): # fill rest of the entries with valid random values
+            break
+        board = make_unique_solution_board(sol, n, root_n, difficulty)
     else: # use a defined board, a "hard" sudoku board from the internet
         board = [[0, 0, 0, 7, 0, 9, 0, 0, 0],
                 [5, 7, 0, 0, 0, 0, 6, 1, 0],
@@ -226,19 +179,36 @@ def create_sudoku_board(root_n, n, difficulty, ran = False):
     return board
 
 def main():
-    global find, sol_num, limit, solved_board, print_bool
-    solved_board = None
-    root_n = 3
-    # making a filled sudoku board and removing values to get a empty board to be solved
-    board = create_sudoku_board(root_n, root_n**2, random.randint(1,6), ran = True)
-    board_to_image(board, root_n**2) # show the empty sudoku board
-    # modifying global variables, because we're now in the solving stage
-    find, sol_num, limit, solved_board, print_bool = True, 0, 100, None, True
-    reccursive_sudoku_solver(board, root_n**2, root_n)
-    board_to_image(solved_board, root_n**2)
-    #heuristic_sudoku_solver(board, 9, root_n)
+    # modifiable parameters
+    root_n, n = 3, 9
+    randomize, print_bool = False, True
+    limit, sol_counter = 100, 0
+    #making a filled sudoku board and removing values to get a empty board to be solved
+    board = create_sudoku_board(root_n, n, random.randint(1,6), random_board=randomize)
+    if input("do you want to see the generated empty board?") in ["yes", "1", "Yes"]:
+        board_to_image(board, n) # show the empty sudoku board
+
+
+    Exact_cover_generator = exactCover.Knuth_exact_cover_solver(root_n, n, board)
+    backtracking_generator = reccursive_sudoku_solver(board, n, root_n, count_filled_cell(board))
+    # you can change the method of solving the sudoku board by changing which generator to use
+    for sol_board in Exact_cover_generator:
+        if sol_counter > limit:
+            print("found more than", limit, ", terminating the search")
+            break
+        if print_bool: 
+            print_board(sol_board)
+            #board_to_image(sol_board, n)
+        sol_counter+=1
+        if sol_counter > 1:
+            if input("do you want to continue? 1 for true, 0 to exit:\n") == "0": 
+                break
+    if sol_counter == 1: 
+        print("found one unique solution")
+        board_to_image(sol_board, n)
+    else:
+        print("found", sol_counter, "many solutions")
+    
 
 if __name__ == "__main__":
-    main()    
-
-    
+    main()     
