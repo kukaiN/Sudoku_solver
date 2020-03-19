@@ -142,7 +142,7 @@ def make_unique_solution_board(board, n, root_n, difficulty):
             for index in maybe_remove: # remove values stored in these positions
                 fake_board[index//n][index%n] = 0
             sol_counter = 0
-            for sol in reccursive_sudoku_solver(fake_board, n, root_n, count_filled_cell(fake_board)): #solves the board
+            for sol in exactCover.Knuth_exact_cover_solver(root_n, n, fake_board): #solves the board
                 sol_counter+=1
                 if sol_counter > 1: break
             if sol_counter == 1: # if solutions is unique, then update the board 
@@ -163,7 +163,7 @@ def create_sudoku_board(root_n, n, difficulty, random_board=False):
         fill_block(board, 0, 0 , root_n, random.sample(list(range(1,n+1)), n))#shuffles 1~n and fill the top-left block
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
         board = transpose_matrix(fill_top_block(board, root_n, n), n)
-        for sol in reccursive_sudoku_solver(board, n, root_n, count_filled_cell(board)): # fill rest of the entries with valid random values
+        for sol in exactCover.Knuth_exact_cover_solver(root_n, n, board): # fill rest of the entries with valid random values
             break
         board = make_unique_solution_board(sol, n, root_n, difficulty)
     else: # use a defined board, a "hard" sudoku board from the internet
@@ -185,10 +185,9 @@ def main():
     limit, sol_counter = 100, 0
     #making a filled sudoku board and removing values to get a empty board to be solved
     board = create_sudoku_board(root_n, n, random.randint(1,6), random_board=randomize)
-    if input("do you want to see the generated empty board?") in ["yes", "1", "Yes"]:
+    if input("do you want to see the generated empty board?\n") in ["yes", "1", "Yes"]:
+        print_board(board)
         board_to_image(board, n) # show the empty sudoku board
-
-
     Exact_cover_generator = exactCover.Knuth_exact_cover_solver(root_n, n, board)
     backtracking_generator = reccursive_sudoku_solver(board, n, root_n, count_filled_cell(board))
     # you can change the method of solving the sudoku board by changing which generator to use

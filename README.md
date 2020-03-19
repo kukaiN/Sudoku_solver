@@ -1,16 +1,14 @@
 # Sudoku_solver
-This is a sudoku board generator and two different kinds of solver, implimented in Python</br>
+This repo has a sudoku board generator and two different kinds of solver, implimented in Python</br>
 
 ---
 ### Updates & future plans:
-- I plan to implement a dancing link version of this solver.  Donald Knuth's algorithm for solving sudoku using exact cover is fascinating, and I plan to update this program once I finish the chapter on exact covering problems in Knuth's TAoCP book 5.
-    -   If Knuth's algorithm requires C++, then I'll write it in C++.
-- If I feel like it, I will add few more sudoku generators with different approaches to generating "random" boards
-- I might make a new implimentation using pandas and numpy to make the 2d array efficient.
-
+- Exact cover method is finished in Python
+-  If I feel like it, I'll code the Exact cover method using dancing links in C++
 ---
 ## Table of Contents:
 - [Sudoku Solver](#solver)
+- [Exact Cover Method](#solver2)
 - [Sudoku Generator](#generator)
     - [Visual of the Generator](#visual)
 - [Output of the Code](#output)
@@ -18,9 +16,32 @@ This is a sudoku board generator and two different kinds of solver, implimented 
 ---
 <a id = "solver"></a>  
 ## My Sudoku Solver
-I used recursion ((later found out that its called back-tracking) to solve a sudoku board.
+I used recursion (later found out that its called back-tracking) to solve a sudoku board.
 
 
+---
+<a id = "solver"></a>  
+## Exact Cover Method
+The exact cover method I implimented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
+I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys that are associated with a given cover is stored in a separate disctionary called cover_dict.
+| dict name | stored value    |
+|-----------|-----------------|
+|  p(i, j)  |    set of k     |    
+|  r(i, k)  |    set of j     |
+|  c(j, k)  |    set of i     |   
+|  b(x, k)  |  set of (i, j)  |    
+
+- p(i, j) stores a set of all numbers that can be stored in the cell (i, j)
+- r(i, k) stores a set of row indices where the number k can be stored in colum i 
+- c(j, k) stores a set of row indices where the number k can be stored in row j
+- b(x, k) stores a set of positions which the number k can be stored in within that box
+
+Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
+
+My thought process and deeper explanation of the code are commented in the .py file
+---
+<a id = "generator"></a>  
+## My Sudoku Generator
 ---
 I didn't use this method, but some algorithms make filled sudoku in a fast and reliable way, notably the method listed below:
 - 1.) Generate a permuted list of 1-9 and placing them on the first row
@@ -29,10 +50,8 @@ I didn't use this method, but some algorithms make filled sudoku in a fast and r
 - 4.) shift by 1 for the 4th row, then shift by 3 for 5th and 6th row
 - 5.) do step 4 with 7th, 8th, and 9th row
 - 6.) using some rules, permute the block row and or column
-
 ---
-<a id = "generator"></a>  
-## My Sudoku Generator
+
 I didn't use this method because the number of possible sudoku boards is limited, although the number of possible output states is enormous. I wanted to make a pure random sudoku generator that can output all possible states with unique solutions with non-zero probability, so I made a generator using the recursive solver to generate a complete board.
 My method of generating a sudoku board is to fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values. Then you have a block of rows and a column of rows that are somewhat independent of each other, then use the recursive solver to fill in the rest.  The recursive solver chooses randomly from the possible numbers that can be entered in that cell, so the randomness of the output is not damaged.
 
