@@ -63,14 +63,14 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
          <tr>
             <td align="center">cover_dict</td>
             <td align="center">(i, j, k)</td>
-            <td align="center">set of keys for p_dict, r_dict, c_dict, b_dict</td>
+            <td align="center">keys for p_dict, r_dict, c_dict, b_dict</td>
         </tr>
     </tbody>
 </table>
 
 - p(i, j) stores a set of all numbers that can be stored in the cell (i, j)
-- r(i, k) stores a set of row indices where the number k can be stored in colum i 
-- c(j, k) stores a set of row indices where the number k can be stored in row j
+- r(i, k) stores a set of indices, j, where the number k can be stored in column i 
+- c(j, k) stores a set of indices, i, where the number k can be stored in row j
 - b(x, k) stores a set of positions which the number k can be stored in within that box
 
 Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
