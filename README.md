@@ -57,7 +57,7 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
         </tr>
          <tr>
             <td align="left">cover((i, j, k))</td>
-            <td align="center">set of (i, j)</td>
+            <td align="center">set of keys for p_dict, r_dict, c_dict, b_dict</td>
         </tr>
     </tbody>
 </table>
