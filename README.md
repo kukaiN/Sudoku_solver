@@ -30,15 +30,7 @@ I used recursion (later found out that it's called backtracking) to solve a sudo
 
 ### Exact Cover Method
 The exact cover method implimented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
-I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys that are associated with a given cover is stored in a separate disctionary called cover_dict.
-|   dict name   | stored value    |
-|---------------|-----------------|
-|    p(i, j)    |    set of k     |    
-|    r(i, k)    |    set of j     |
-|    c(j, k)    |    set of i     |   
-|    b(x, k)    |  set of (i, j)  |    
-| cover(i, j, k)|   set of keys   |
-
+I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys that are associated with a given cover is stored in a separate disctionary called cover_dict. Also the keys are tuples because they have to be hashable.
 <table>
     <thead>
         <tr>
@@ -48,19 +40,23 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
     </thead>
     <tbody>
         <tr>
-            <td align="left">p(i, j)</td>
+            <td align="left">p((i, j))</td>
             <td align="center">set of k</td>
         </tr>
         <tr>
-            <td align="left">r(i, k)</td>
+            <td align="left">r((i, k))</td>
             <td align="center">set of j</td>
         </tr>
         <tr>
-            <td align="left">c(j, k)</td>
+            <td align="left">c((j, k))</td>
             <td align="center">set of i</td>
         </tr>
         <tr>
-            <td align="left">b(j, k)</td>
+            <td align="left">b((j, k))</td>
+            <td align="center">set of (i, j)</td>
+        </tr>
+         <tr>
+            <td align="left">cover((i, j, k))</td>
             <td align="center">set of (i, j)</td>
         </tr>
     </tbody>
