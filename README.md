@@ -98,6 +98,7 @@ My method of generating a sudoku board is to fill the top 3 blocks with valid ra
 | ![board1](images/Figure_1.png)   |   ![board2](images/Figure_2.png) |   ![board3](images/Figure_3.png) |
 
 Then fill the rest with valid random values.  After the recursive solver makes a filled randomized sudoku board, start making batches of random positions and check the uniqueness of the solution if they're removed.  If the uniqueness is preserved, delete those values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if the required number of entries are removed.  By checking the number of solutions, we can observe which cell values are vital to preserving the uniqueness of the solution.
+
 ---
 <a id = "output"></a> 
 ## Outputs:
