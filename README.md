@@ -43,15 +43,15 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
     <thead>
         <tr>
             <th align="left">Column1</th>
-            <th align="center">Column1</th>
-            <th align="right">Column1</th>
+            <th align="center">Column2</th>
+            <th align="right">Column3</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td align="left">Column1</td>
-            <td align="center">Column1</td>
-            <td align="right">Column1</td>
+            <td align="left">Column4</td>
+            <td align="center">Column5</td>
+            <td align="right">Column6</td>
         </tr>
     </tbody>
 </table>
