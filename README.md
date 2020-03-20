@@ -35,28 +35,34 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
     <thead>
         <tr>
             <th align="left">Dict name</th>
+            <th align="center">Keys</th>
             <th align="center">Stored Value</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td align="left">p((i, j))</td>
+            <td align="left">p_dict</td>
+            <td align="left">(i, j)</td>
             <td align="center">set of k</td>
         </tr>
         <tr>
-            <td align="left">r((i, k))</td>
+            <td align="left">r_dict</td>
+            <td align="left">(i, k)</td>
             <td align="center">set of j</td>
         </tr>
         <tr>
-            <td align="left">c((j, k))</td>
+            <td align="left">c_dict</td>
+            <td align="left">(j, k)</td>
             <td align="center">set of i</td>
         </tr>
         <tr>
-            <td align="left">b((j, k))</td>
+            <td align="left">b_dict</td>
+            <td align="left">(x, k)</td>
             <td align="center">set of (i, j)</td>
         </tr>
          <tr>
-            <td align="left">cover((i, j, k))</td>
+            <td align="left">cover_dict</td>
+            <td align="left">(i, j, k)</td>
             <td align="center">set of keys for p_dict, r_dict, c_dict, b_dict</td>
         </tr>
     </tbody>
