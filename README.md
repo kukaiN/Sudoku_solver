@@ -53,6 +53,16 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
             <td align="center">Column5</td>
             <td align="right">Column6</td>
         </tr>
+        <tr>
+            <td align="left">Column4</td>
+            <td align="center">Column5</td>
+            <td align="right">Column6</td>
+        </tr>
+        <tr>
+            <td align="left">Column4</td>
+            <td align="center">Column5</td>
+            <td align="right">Column6</td>
+        </tr>
     </tbody>
 </table>
 
