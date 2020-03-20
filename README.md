@@ -8,28 +8,53 @@ This repo has a sudoku board generator and two different kinds of backtracking s
 ---
 ## Table of Contents:
 - [Sudoku Solver](#solver)
-- [Exact Cover Method](#solver2)
+    - [My Backtracking solver](#solver1)
+    - [Exact Cover Method](#solver2)
 - [Sudoku Generator](#generator)
     - [Visual of the Generator](#visual)
 - [Output of the Code](#output)
 
 ---
 <a id = "solver"></a>  
-## My Sudoku Solver
-I used recursion (later found out that its called back-tracking) to solve a sudoku board.
+
+## Sudoku Solver 
+
+<a id = "solver1"></a>
+
+### My Backtracking Solver
+I used recursion (later found out that it's called backtracking) to solve a sudoku board.  The function that finds the solutions is implimented as a generator.
 
 
----
-<a id = "solver"></a>  
-## Exact Cover Method
-The exact cover method I implimented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
+
+<a id = "solver2"></a>  
+
+### Exact Cover Method
+The exact cover method implimented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
 I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys that are associated with a given cover is stored in a separate disctionary called cover_dict.
-| dict name | stored value    |
-|-----------|-----------------|
-|  p(i, j)  |    set of k     |    
-|  r(i, k)  |    set of j     |
-|  c(j, k)  |    set of i     |   
-|  b(x, k)  |  set of (i, j)  |    
+|   dict name   | stored value    |
+|---------------|-----------------|
+|    p(i, j)    |    set of k     |    
+|    r(i, k)    |    set of j     |
+|    c(j, k)    |    set of i     |   
+|    b(x, k)    |  set of (i, j)  |    
+| cover(i, j, k)|   set of keys   |
+
+<table>
+    <thead>
+        <tr>
+            <th align="left">Column1</th>
+            <th align="center">Column1</th>
+            <th align="right">Column1</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td align="left">Column1</td>
+            <td align="center">Column1</td>
+            <td align="right">Column1</td>
+        </tr>
+    </tbody>
+</table>
 
 - p(i, j) stores a set of all numbers that can be stored in the cell (i, j)
 - r(i, k) stores a set of row indices where the number k can be stored in colum i 
@@ -38,7 +63,7 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
 
 Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
 
-My thought process and deeper explanation of the code are commented in the .py file
+My thought process and deeper explanation of the code are commented in the exact_cover_solver.py
 ---
 <a id = "generator"></a>  
 ## My Sudoku Generator
