@@ -1,10 +1,10 @@
 # Sudoku_solver
-This repo has a sudoku board generator and two different kinds of backtracking solver, implimented in Python</br>
+This repo has a sudoku board generator and two backtracking solver with different problem solving methods, all implemented in Python</br>
 
 ---
 ### Updates & future plans:
 - Exact cover method is finished in Python
--  If I feel like it, I'll code the Exact cover method using dancing links in C++
+- If I feel like it, I'll code the Exact cover method using dancing links in C++
 ---
 ## Table of Contents:
 - [Sudoku Solver](#solver)
@@ -22,15 +22,13 @@ This repo has a sudoku board generator and two different kinds of backtracking s
 <a id = "solver1"></a>
 
 ### My Backtracking Solver
-I used recursion (later found out that it's called backtracking) to solve a sudoku board.  The function that finds the solutions is implimented as a generator.
-
-
+I used recursion (later found out that it's called backtracking) to solve a sudoku board.  The function that finds the solutions is implemented as a generator.
 
 <a id = "solver2"></a>  
 
 ### Exact Cover Method
-The exact cover method implimented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
-I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys that are associated with a given cover is stored in a separate disctionary called cover_dict. Also the keys are tuples because they have to be hashable.
+The exact cover method implemented is from Donald E. Knuth's TAoCP Vol 5 Fascicle 5.
+I have four dictionaries called p_dict, r_dict, c_dict, and b_dict, and the keys that are associated with a given cover is stored as a tuple in a separate dictionary called cover_dict. Also, the keys are tuples because they have to be hashable.
 <table>
     <thead>
         <tr>
@@ -73,7 +71,7 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
 - c(j, k) stores a set of indices, i, where the number k can be stored in row j
 - b(x, k) stores a set of positions which the number k can be stored in within that box
 
-Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
+Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation, and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
 
 My thought process and deeper explanation of the code are commented in the exact_cover_solver.py
 ---
@@ -89,8 +87,8 @@ I didn't use this method, but some algorithms make filled sudoku in a fast and r
 - 6.) using some rules, permute the block row and or column
 ---
 
-I didn't use this method because the number of possible empty sudoku boards is limited, although the number of possible output states is enormous. I wanted to make a pure random sudoku generator that can output all possible states with unique solutions with non-zero probability, so I made my own method of generating a sudoku board.
-My method of generating a sudoku board is to fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values. Then you have a blocks filled in a L shape and filling in the blocks is easy because the constraints  independent of each other, then use the recursive solver to fill in the rest.  The recursive solver chooses randomly from the possible numbers that can be entered in that cell, so the randomness of the output is not damaged.
+I didn't use this method because the number of possible empty sudoku boards is limited, although the number of possible output states is enormous. I wanted to make a pure random sudoku generator that can output all possible states with unique solutions with non-zero probability, so I made my method of generating a sudoku board.
+My method of generating a sudoku board is to fill the top 3 blocks with valid random values, then transpose the matrix and fill the "new" top row with valid random values. Then you have blocks filled in an L shape, and filling in the blocks is easy because of the constraints are independent of each other, then use the recursive solver to fill in the rest.  The recursive solver chooses randomly from the possible numbers that can be entered in that cell, so the randomness of the output is not damaged.
 
 ---
 <a id = "visual"></a> 
@@ -99,9 +97,7 @@ My method of generating a sudoku board is to fill the top 3 blocks with valid ra
 |---------------------------|---------------------------|---------------------------|
 | ![board1](images/Figure_1.png)   |   ![board2](images/Figure_2.png) |   ![board3](images/Figure_3.png) |
 
-Then fill the rest with valid random values
-After the recursive solver makes a filled randomized sudoku board, start making batches of random positions and check the uniqueness of the solution if they're removed.  If the uniqueness is preserved, delete the values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if the required number of entries are removed.  By checking if the number of solutions, we can observe which cell values are vital to preserving the uniqueness of the solution.
-
+Then fill the rest with valid random values.  After the recursive solver makes a filled randomized sudoku board, start making batches of random positions and check the uniqueness of the solution if they're removed.  If the uniqueness is preserved, delete those values in those positions, if there's a divergence in the number of solutions, then use a new random batch and start over.  Exit the removing stage if the required number of entries are removed.  By checking the number of solutions, we can observe which cell values are vital to preserving the uniqueness of the solution.
 ---
 <a id = "output"></a> 
 ## Outputs:
