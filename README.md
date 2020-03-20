@@ -72,4 +72,4 @@ After the recursive solver makes a filled randomized sudoku board, start making 
 ## Outputs:
 |Random empty board state:|Solved board state: |
 |--------------------------|-----------------------|
-|![empty_state](Figure_4.png) | ![solved_state](Figure_5.png)|
+|![empty_state](images/Figure_4.png) | ![solved_state](images/Figure_5.png)|
