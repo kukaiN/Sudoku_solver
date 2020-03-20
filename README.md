@@ -1,5 +1,5 @@
 # Sudoku_solver
-This repo has a sudoku board generator and two different kinds of solver, implimented in Python</br>
+This repo has a sudoku board generator and two different kinds of backtracking solver, implimented in Python</br>
 
 ---
 ### Updates & future plans:
@@ -60,7 +60,7 @@ My method of generating a sudoku board is to fill the top 3 blocks with valid ra
 ## Visual Interpertation of the Generating Algorithm:
 | 1.) fill the top 3 blocks |2.) Transpose the matrix | 3.) & 4.) Fill the new top blocks and transpose it back|
 |---------------------------|---------------------------|---------------------------|
-| ![board1](Figure_1.png)   |   ![board2](Figure_2.png) |   ![board3](Figure_3.png) |
+| ![board1](images/Figure_1.png)   |   ![board2](images/Figure_2.png) |   ![board3](images/Figure_3.png) |
 
 5.) Then fill the rest with valid random values
 ---
