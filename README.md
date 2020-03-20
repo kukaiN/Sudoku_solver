@@ -42,26 +42,26 @@ I have 4 dictionaries called p_dict, r_dict, c_dict, and b_dict and the keys tha
 <table>
     <thead>
         <tr>
-            <th align="left">Column1</th>
-            <th align="center">Column2</th>
-            <th align="right">Column3</th>
+            <th align="left">Dict name</th>
+            <th align="center">Stored Value</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td align="left">Column4</td>
-            <td align="center">Column5</td>
-            <td align="right">Column6</td>
+            <td align="left">p(i, j)</td>
+            <td align="center">set of k</td>
         </tr>
         <tr>
-            <td align="left">Column4</td>
-            <td align="center">Column5</td>
-            <td align="right">Column6</td>
+            <td align="left">r(i, k)</td>
+            <td align="center">set of j</td>
         </tr>
         <tr>
-            <td align="left">Column4</td>
-            <td align="center">Column5</td>
-            <td align="right">Column6</td>
+            <td align="left">c(j, k)</td>
+            <td align="center">set of i</td>
+        </tr>
+        <tr>
+            <td align="left">b(j, k)</td>
+            <td align="center">set of (i, j)</td>
         </tr>
     </tbody>
 </table>
