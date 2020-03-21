@@ -7,12 +7,21 @@ This repo has a sudoku board generator and two backtracking solver with differen
 - If I feel like it, I'll code the Exact cover method using dancing links in C++
 ---
 ## Table of Contents:
+- [Dependencies](#depen)
 - [Sudoku Solver](#solver)
     - [My Backtracking solver](#solver1)
     - [Exact Cover Method](#solver2)
 - [Sudoku Generator](#generator)
     - [Visual of the Generator](#visual)
 - [Output of the Code](#output)
+
+---
+<a id = "depen"></a>
+
+## Dependencies
+- Matplotlib
+- Numpy
+- itertools
 
 ---
 <a id = "solver"></a>  
