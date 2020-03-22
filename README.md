@@ -19,9 +19,9 @@ This repo has a sudoku board generator and two backtracking solver with differen
 <a id = "depen"></a>
 
 ## Dependencies
-- Matplotlib
-- Numpy
-- itertools
+- Matplotlib, visualize the unsolved and solved board states and allows them to be stored as .png
+- Numpy, used together with matplotlib
+- itertools, easy way to make cartesian product
 
 ---
 <a id = "solver"></a>  
@@ -83,6 +83,7 @@ I have four dictionaries called p_dict, r_dict, c_dict, and b_dict, and the keys
 Then the backtracking algorithm chooses the coordinate (i, j) with the smallest branching factor and fills that cell.  If a cell is filled, then it removes the associated elements.  The backtracker will remove values from the stored set or remove it entirely depending on the situation, and when a solution is found, the dictionaries will all be empty. If a filled cell needs to be emptied, then the removed values are put back in the dictionaries. Then repeat the process until all solutions are found.
 
 My thought process and deeper explanation of the code are commented in the exact_cover_solver.py
+
 ---
 <a id = "generator"></a>  
 ## My Sudoku Generator
