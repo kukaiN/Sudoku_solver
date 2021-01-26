@@ -61,7 +61,14 @@ function add_cells(table_object, curr_size, new_size) {
 function change_size(){// modify the board size on screen
     var sudoku_board = document.getElementById("sudoku_board");
     var new_size = document.getElementById("board_size").value**2;
+    var errorlog = document.getElementById("errorlog");
     var current_size = get_size();
+
+
+    console.log(current_size);
+    if (current_size == 0){
+        add_row(sudoku_board, 0, new_size);
+    }
     if (new_size > current_size) {
         add_cells(sudoku_board, current_size, new_size);
         add_row(sudoku_board, current_size, new_size);
@@ -73,5 +80,21 @@ function change_size(){// modify the board size on screen
     else{
         // pass, cause no need to modify board
     }
+    change_size1();
 }
 
+function change_size1(){
+
+    var textToInsert = [];
+    var boardsize = 9;
+    for(var i =0 ; i< boardsize; ++i){
+        textToInsert.push('<tr>');
+        for(var j =0; j<boardsize; ++j){
+            textToInsert.push('<td>h</td>');
+        }
+        textToInsert.push('</tr>');
+    }
+    //$("#div1").append("hello");
+    //$("#div1").append("<h1>hello</h1>");
+    $("#div1").append(textToInsert.join(''));
+}

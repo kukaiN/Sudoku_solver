@@ -1,5 +1,7 @@
-{% extends templates.html %}
-<script type="text/javascript" src='{{url_for("static", filename="js/main.js")}}'></script>
+{% extends "templates.html" %}
+
+
+{% block body %}
 
 
 <h1> Hello, choose a sudoku board size, and fill in some numbers and hit solve</h1>
@@ -15,7 +17,11 @@
 
   <div id="main_focus"><!--this is where a sudoku bard recides-->
     <table id="sudoku_board"></table>
-    <script>change_size()</script>
+
+    <input type="button" value="click me" class="bttn" onclick='$("#div1").append("hello")'/>
+    <input type="button" value="click me" class="bttn" onclick='$("#div1").empty()'/>
+    <input type="button" value="click me" class="bttn" onclick="change_size1()"/>
+    <div id="div1"></div>
   </div>
 
 

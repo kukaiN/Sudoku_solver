@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 
 
@@ -7,9 +7,8 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html" board_size=request)
+    return render_template("index.html")
 
-@app.route("solution", methods=["GET", "POST"])
+@app.route("/solution", methods=["GET", "POST"])
 def solution():
-
-    user_input = request.form.get()
+    return "hello world"
