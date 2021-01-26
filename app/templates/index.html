@@ -1,0 +1,22 @@
+{% extends templates.html %}
+<script type="text/javascript" src='{{url_for("static", filename="js/main.js")}}'></script>
+
+
+<h1> Hello, choose a sudoku board size, and fill in some numbers and hit solve</h1>
+
+
+<div id="top_bar">
+    <label>n, the size of the small square</label><input type="number" value="3" min="1" max="5" id="board_size"  class = "bttn" style="width:40px" />
+    <input type="button" value="modify size" id="modifier" class = "bttn" onclick="change_size()" /><br/>
+    <input type="button" value="solve board" id="solver"  class = "bttn" onclick="sudoku_solver()"/><br/>
+    <input type="button" value="partially solve" id="partially"  class = "bttn" onclick='partially_solve()'/><br/>
+    <input type="button" value="clear board" id="clear_board"  class = "bttn" onclick="clear_board()"/><br/>
+  </div>
+
+  <div id="main_focus"><!--this is where a sudoku bard recides-->
+    <table id="sudoku_board"></table>
+    <script>change_size()</script>
+  </div>
+
+
+{% endblock %}
