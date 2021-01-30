@@ -10,13 +10,16 @@ table {
 
 }
 td {
-    border: 2px solid black;
+    border: 1px solid gray;
+    padding: 0px;
+    margin: 0px;
 }
 
-#top_bar {
-    padding: 40px;
+.sudoku_board {
+    border: 1px solid black;
+    border-spacing: 0;
+ 
 }
-
 
 .sudoku_cell {
     border: None;
@@ -24,7 +27,29 @@ td {
     width: 40px;
     height: 40px;
     background-color: inherit;
+    margin: 0px;
+    padding: 0px;
 }
+
+
+.leftborder{
+    border-left: 2px solid black;
+}
+.topborder{
+    border-top: 2px solid black;
+}
+.rightborder{
+    border-right: 2px solid black;
+}
+.bottomborder{
+    border-bottom: 2px solid black;
+}
+
+#top_bar {
+    padding: 40px;
+}
+
+
 
 #main_focus {
     padding:40px;

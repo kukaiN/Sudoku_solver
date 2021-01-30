@@ -1,5 +1,10 @@
 import itertools
 
+def convert_board_to_string(boardList):
+    board = [[row.join("n") for row in sol].join("n") for sol in boardList]
+    return board.join("x")
+    
+
 def print_board(board):
     """ prints the sudoku board in the terminal and is visualized nicely """
     for row in board: print(row)
@@ -46,7 +51,9 @@ def Knuth_exact_cover_solver(root_n, n, board):
                         for (i, j, k) in itertools.product(range(n), range(n), range(1,n+1)))
     solution = [(x, y, item) for y, rows in enumerate(board) for x, item in enumerate(rows) if item]
     for partial_sol in solution: remove_from_dict(p_dict, r_dict, c_dict, b_dict, cover_dict, n, partial_sol)
-    return [make_board_from(sol, n) for sol in backtracking_solver(p_dict, r_dict, c_dict, b_dict, cover_dict, root_n, n, solution)]
+    for sol in backtracking_solver(p_dict, r_dict, c_dict, b_dict, cover_dict, root_n, n, solution):
+        yield make_board_from(sol, n)
+    
 
 def remove_from_dict(p_dict, r_dict, c_dict, b_dict, cover_dict, n, num_cell):
     """ remove values associate to the given (i, j, num) from the 4 dictionaries"""
@@ -125,9 +132,26 @@ def main():
             [0, 0, 0, 3, 0, 0, 0, 0, 8], 
             [3, 2, 0, 0, 0, 7, 9, 5, 0]]
     """
+    board = [[0, 0, 3, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 9, 0],
+            [0, 0, 6, 0, 0, 0, 3, 0, 0],
+            [0, 0, 0, 0, 8, 0, 0, 0, 9],
+            [0, 0, 0, 0, 0, 0, 0, 3, 2], 
+            [0, 0, 8, 0, 0, 4, 0, 0, 0],
+            [0, 0, 0, 0, 6, 0, 4, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0], 
+            [0, 0, 0, 0, 0, 0, 0, 0, 0]]
     root_n, n = 3, 9
-    for sol in Knuth_exact_cover_solver(root_n, n, board):
+    sudoku_generator = Knuth_exact_cover_solver(root_n, n, board)
+    print("checking if its actually a generator:")
+    print(sudoku_generator)
+    sol_count = 5
+    print(f"this will only print {sol_count} solutions")
+    for i, sol in enumerate(sudoku_generator):
+        if i==sol_count: break
+        print(f"this is the {i+1}-th one")
         print_board(sol)
+       
     
 if __name__ == "__main__":
     main()

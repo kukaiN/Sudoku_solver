@@ -18,6 +18,7 @@ function checker(){
 }}}
 
 function get_size(){
+    /* get the length of the row on screen*/ 
     return document.getElementById("sudoku_board").rows.length;
 }
 
@@ -59,13 +60,14 @@ function add_cells(table_object, curr_size, new_size) {
             new_cell.appendChild(make_input());
 }}}
 function change_size(){// modify the board size on screen
+    /*
+    this function is depreciated, use change_board_size()
+    */
     var sudoku_board = document.getElementById("sudoku_board");
     var new_size = document.getElementById("board_size").value**2;
     var errorlog = document.getElementById("errorlog");
     var current_size = get_size();
 
-
-    console.log(current_size);
     if (current_size == 0){
         add_row(sudoku_board, 0, new_size);
     }
@@ -80,21 +82,103 @@ function change_size(){// modify the board size on screen
     else{
         // pass, cause no need to modify board
     }
-    change_size1();
+   
 }
 
-function change_size1(){
+function change_board_size(){
+    var new_size_input = document.getElementById("board_size").value;
+    var new_size = new_size_input * new_size_input;
+    if (get_size() != new_size){
+        $("#sudoku_board").empty();
+        create_board(new_size_input, new_size);
+    }
+}
 
+function create_board(small_size, boardsize){
     var textToInsert = [];
-    var boardsize = 9;
-    for(var i =0 ; i< boardsize; ++i){
+    var maxstr = 'max="'+ String(boardsize)+'"';
+    for(var i=0; i<boardsize; ++i){
         textToInsert.push('<tr>');
         for(var j =0; j<boardsize; ++j){
-            textToInsert.push('<td>h</td>');
+            if (i % small_size==0){
+                if (j%small_size == 0 ){
+                    textToInsert.push('<td> <input class="sudoku_cell leftborder topborder" type="number" min="1" '+ maxstr+'/></td>');
+                }
+                else if (j==boardsize-1){
+                    textToInsert.push('<td> <input class="sudoku_cell topborder rightborder" type="number" min="1" '+ maxstr+'/></td>');
+                }
+                else{
+                    textToInsert.push('<td> <input class="sudoku_cell topborder" type="number" min="1" '+ maxstr+'/></td>');
+                }
+            }
+            else if (j%small_size==0 && i == boardsize-1){
+                textToInsert.push('<td> <input class="sudoku_cell leftborder bottomborder" type="number" min="1" '+ maxstr+'/></td>');
+            }
+            else if (j%small_size==0){
+                textToInsert.push('<td> <input class="sudoku_cell leftborder" type="number" min="1" '+ maxstr+'/></td>');
+            }
+            else if (j==boardsize-1 && i==boardsize-1){
+                textToInsert.push('<td> <input class="sudoku_cell rightborder bottomborder" type="number" min="1" '+ maxstr+'/></td>');
+            }
+            else if (j==boardsize-1){
+                textToInsert.push('<td> <input class="sudoku_cell rightborder" type="number" min="1" '+ maxstr+'/></td>');
+            }
+            else if (i==boardsize-1){
+                textToInsert.push('<td> <input class="sudoku_cell bottomborder" type="number" min="1" '+ maxstr+'/></td>');
+            }
+            else{
+                textToInsert.push('<td> <input class="sudoku_cell" type="number" min="1" '+ maxstr+'/></td>');
+            }
         }
         textToInsert.push('</tr>');
     }
-    //$("#div1").append("hello");
-    //$("#div1").append("<h1>hello</h1>");
-    $("#div1").append(textToInsert.join(''));
+    $("#sudoku_board").append(textToInsert.join(''));
+}
+
+function get_board_value(){
+    /*
+    gets the value of the sudoku board as a 1D array, 
+    the funcion also checks that the entries written into the array is valid
+    the values stored in array are valid, but that doesn't mean the board is valid
+    */
+    var size = get_size();
+    var board = document.getElementById("sudoku_board");
+    // create a n*n array initialized with 0
+    let board_to_return = new Array(size*size);
+    for (let i=0; i< size*size; ++i){board_to_return[i] = 0;}
+    // iterate over i, j coordinate of board
+    for (var i = 0; i<size;++i){
+        // get html element of table row
+        var curr_row = board.rows[i];
+        // iterate over each table cell in that row
+        for (var j = 0; j<size; ++j){
+            var stored_val = parseInt(curr_row.cells[j].getElementsByClassName("sudoku_cell")[0].value);
+            // check if that cell is filled and its a valid input
+            if (!isNaN(stored_val) && (stored_val > 0) && (stored_val < size+1)){
+                board_to_return[(i*size)+j] = stored_val;
+            }
+        }
+    }
+    console.log("the value stored in the cells:")
+    console.log(board_to_return)
+    return board_to_return
+}
+
+function get_board_as_string(boardArr){
+    var returnval = boardArr.join("n")
+    console.log(returnval)
+    return returnval
+}
+
+function submit_board(){
+    // submit the current board to the server as a string, commas have a special meaning
+    // in urls, so i use the letter n to separate the numbers
+    var boardArr = get_board_value()
+    var board_size = get_size();
+    var boardArrString = get_board_as_string(boardArr)
+    console.log("tyring to submit")
+    $.get("/newroute", {a:boardArrString, b: board_size}).done(function(data){
+        console.log(data)
+        console.log("finished submmiting")
+    });
 }
