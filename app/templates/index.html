@@ -3,43 +3,52 @@
 
 {% block body %}
 
+<div class="container" id="sudoku_container">
+  <h1> Hello, choose a sudoku board size, and fill in some numbers and hit solve</h1>
+  
+  <div class="row">
+    <div id="topBar">
+      <div id="topLeftBar" class=""> 
+        <label>n, the size of the small square</label>
+        
+        <!--
+          <input type="number" value="3" min="1" max="5" id="board_size"  class = "bttn" style="width:40px" />
+        -->
+        <select id="board_size"> 
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
 
-<h1> Hello, choose a sudoku board size, and fill in some numbers and hit solve</h1>
-
-
-  <div id="topBar">
-    <div id="topLeftBar"> 
-      <label>n, the size of the small square</label><input type="number" value="3" min="1" max="5" id="board_size"  class = "bttn" style="width:40px" />
-      <input type="button" value="modify size" id="modifier" class = "bttn"  onclick="change_board_size()"/><br/>
-      <p>
-        <input type="button" value="solve board" id="solver"  class = "bttn" onclick="submit_board()"/><br/>
-        <input type="button" value="partially solve" id="partially"  class = "bttn" onclick='partially_solve()'/><br/>
-        <input type="button" value="clear board" id="clear_board"  class = "bttn" onclick="clear_board()"/><br/>
-      </p>
+        <input type="button" value="modify size" id="modifier" class = "bttn"  onclick="change_board_size()"/><br/>
+        <p>
+          <input type="button" value="solve board" id="solver"  class = "bttn" onclick="submit_board()"/><br/>
+          <input type="button" value="partially solve" id="partially"  class = "bttn" onclick='partially_solve()'/><br/>
+          <input type="button" value="clear board" id="clear_board"  class = "bttn" onclick="clear_board()"/><br/>
+        </p>
+      </div>
     </div>
-    <div id="topRightBar">
+  </div>
+
+  <div class="row">
+    <div id="topRightBar" class="col-2">
       <h1>Solutions</h1>
       <table id="solutionList" cellspacing="0"></table>
-
     </div>
-    
-  </div>
+    <div id="main_focus" class="col-10">
+        <!--this is where a sudoku bard recides-->
+        <table id="sudoku_board" cellspacing="0"></table>
+      </div>
 
-  <div id="main_focus"><!--this is where a sudoku bard recides-->
- 
-      <table id="sudoku_board" cellspacing="0"></table>
- 
-  
-    <!--
-    <input type="button" value="click me" class="bttn" onclick='$("#error_div").append("hello")'/>
-    <input type="button" value="click me" class="bttn" onclick='$("#error_div").empty()'/>
-    -->
-    <div id="error_div"></div>
-    <script> 
-    change_board_size();
-    
-    </script>
+    <script>change_board_size();</script>
   </div>
-
+</div>
 
 {% endblock %}

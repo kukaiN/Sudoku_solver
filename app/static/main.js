@@ -241,7 +241,7 @@ function show_solution_box(){
 }
 function clear_solution(){
     var textToInsert = [];
-    textToInsert.append('<td> <input type="button" value="hide solution" onclick="fill_sol_num(-1)"/></td>')
+    textToInsert.push('<td> <input type="button" value="hide solution" onclick="fill_sol_num(-1)"/></td>')
     $("#solutionList").append(textToInsert.join(''))
 }
 
@@ -254,7 +254,7 @@ function fill_sol_num(numstr){
 
     if (num < 0){
         var previous_board = localStorage.getItem("current_board");
-        insert_values(previous_board, sol_size)
+        insert_values(previous_board, sol_size);
     }
     else{
         var sol = sol_list[num].split("n")
