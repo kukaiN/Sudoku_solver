@@ -14,6 +14,28 @@ td {
     padding: 0px;
     margin: 0px;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0px;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+#topRightBar .rightflex{
+    flex-grow: 1;
+}
+#topRightBar {
+   float:right;
+   display: block;
+   padding: 0px;
+   left:50%;
+   border: 1px solid black;
+}
+#topLeftBar {
+   padding: 0px;
+}
 
 .sudoku_board {
     border: 1px solid black;

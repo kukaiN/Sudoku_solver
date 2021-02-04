@@ -1,3 +1,10 @@
+Storage.prototype.setObj = function(key, value){
+    return this.setItem(key, JSON.stringify(value));
+}
+Storage.prototype.getObj = function(key, value){
+    return JSON.parse(this.getItem(key));
+}
+
 
 function checker(){
     var board = document.getElementById("sudoku_board");
@@ -144,8 +151,7 @@ function get_board_value(){
     var size = get_size();
     var board = document.getElementById("sudoku_board");
     // create a n*n array initialized with 0
-    let board_to_return = new Array(size*size);
-    for (let i=0; i< size*size; ++i){board_to_return[i] = 0;}
+    let board_to_return = zeroArr(size*size);
     // iterate over i, j coordinate of board
     for (var i = 0; i<size;++i){
         // get html element of table row
@@ -175,10 +181,132 @@ function submit_board(){
     // in urls, so i use the letter n to separate the numbers
     var boardArr = get_board_value()
     var board_size = get_size();
-    var boardArrString = get_board_as_string(boardArr)
-    console.log("tyring to submit")
+    var boardArrString = get_board_as_string(boardArr);
+    console.log("tyring to submit board info");
     $.get("/newroute", {a:boardArrString, b: board_size}).done(function(data){
-        console.log(data)
-        console.log("finished submmiting")
+        if (data.length > 0){
+            if (data.charAt(0) == "!"){
+                console.log("a message from server");
+                console.log(data);
+            }
+            else{
+                var sol_list = data.split("x");
+                localStorage.setItem("current_board", boardArr);
+                localStorage.setItem("board_state", boardArrString);
+                localStorage.setItem("board_length", board_size);
+                localStorage.setObj("sol_list", sol_list);
+                localStorage.setItem("sol_length", sol_list.length);
+                console.log(sol_list);
+                show_solution_box();
+            }
+        }
+        else {
+            console.log("nothing returned from server");
+        }
+        
     });
 }
+
+function show_solution_box(){
+    console.log("this function")
+    var sol_len = localStorage.getItem("sol_length") 
+    if (sol_len){
+        if (sol_len == 1){
+            var previous_board = localStorage.getItem("current_board");
+            var solution_list = localStorage.getObj("sol_list")
+            var unique_solution = solution_list[0];
+            localStorage.setItem("previous_board", previous_board);
+            localStorage.setItem("current_board", unique_solution);
+            console.log(localStorage.getItem("board_length"))
+            insert_values(unique_solution, localStorage.getItem("board_length"));
+        }
+        else if (sol_len > 1){// make tabs to switch between values
+            console.log("box will show up")
+            var textToInsert = [];
+           
+            var sol_size = localStorage.getItem("board_length")
+            for(var i=0; i<sol_size; ++i){
+                var input_str = '<td> <input type="button" value="show solution" onclick="fill_sol_num( '+i+')"/></td>'
+              
+                textToInsert.push('<tr>');
+                textToInsert.push(input_str);
+                textToInsert.push('</tr>');
+                
+            }
+            console.log(textToInsert);
+            $("#solutionList").append(textToInsert.join(''));
+        }
+        clear_solution();
+    }
+}
+function clear_solution(){
+    var textToInsert = [];
+    textToInsert.append('<td> <input type="button" value="hide solution" onclick="fill_sol_num(-1)"/></td>')
+    $("#solutionList").append(textToInsert.join(''))
+}
+
+
+
+function fill_sol_num(numstr){
+    var num = parseInt(numstr)
+    var sol_list = localStorage.getObj("sol_list")
+    var sol_size = localStorage.getItem("board_length")
+
+    if (num < 0){
+        var previous_board = localStorage.getItem("current_board");
+        insert_values(previous_board, sol_size)
+    }
+    else{
+        var sol = sol_list[num].split("n")
+        insert_values(sol, sol_size)
+    }
+}
+    
+
+function clear_board(){
+    var board_val = get_board_value();
+    var board_size = get_size();
+    var clear = false;
+    // first check if there is a value thats non-zero
+    for (var i = 0; i < board_size*board_size; ++i){
+       if (board_val[i] != 0){
+           clear = true;
+       }
+    }
+    // if the user says yes, clean the board
+    if (clear && confirm("Are you sure you want to clear the board?")){
+        insert_values(zeroArr(board_size*board_size), board_size)
+    }
+}
+
+function delete_board(){
+    // deletes the whole table
+    $("#sudoku_board").empty();
+}
+
+function insert_values(numArray, board_size){
+    console.log("trying to insert:")
+    console.log(numArray)
+    console.log(board_size)
+    console.log(numArray.length)
+    if (numArray.length != board_size * board_size){
+        console.log("the number sequence and the board doesnt match");
+        return 0;
+    }
+    var board_obj = document.getElementById("sudoku_board");
+        for (var i = 0; i < board_size; ++i){ // modify the current rows and extend them
+            var curr_row = board_obj.rows[i];
+            for (var j = 0; j < board_size; ++j){
+                var curr_cell = curr_row.cells[j];
+                curr_cell.getElementsByClassName("sudoku_cell")[0].value = numArray[i*board_size + j];
+        }}
+}
+
+function zeroArr(n){
+    let board_to_return = new Array(n);
+    for (let i=0; i< n; ++i){board_to_return[i] = 0;}
+    return board_to_return
+}
+
+
+

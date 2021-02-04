@@ -1,8 +1,10 @@
 import itertools
 
 def convert_board_to_string(boardList):
-    board = [[row.join("n") for row in sol].join("n") for sol in boardList]
-    return board.join("x")
+    boardList_str = [[[str(num) for num in row] for row in sol] for sol in boardList]
+    board = ["n".join(["n".join(row) for row in sol]) for sol in boardList_str]
+    return "x".join(board)
+
     
 
 def print_board(board):
